@@ -1,12 +1,10 @@
+import { getBackendBaseUrl } from '@/lib/backend-url';
 import type { GeneratePayload, GenerateResponse, HealthResponse } from '@/lib/types';
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, '') || 'http://127.0.0.1:8000';
-
-let activeApiBaseUrl = API_BASE_URL;
+const API_BASE_URL = getBackendBaseUrl();
 
 export function getApiBaseUrl() {
-  return activeApiBaseUrl;
+  return API_BASE_URL;
 }
 
 export function buildDownloadUrl(downloadUrl: string) {
@@ -14,40 +12,7 @@ export function buildDownloadUrl(downloadUrl: string) {
     return downloadUrl;
   }
 
-  return `${activeApiBaseUrl}${downloadUrl.startsWith('/') ? downloadUrl : `/${downloadUrl}`}`;
-}
-
-function getCandidateApiBaseUrls() {
-  const candidates = [API_BASE_URL];
-
-  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-    for (const fallback of ['http://127.0.0.1:8000', 'http://127.0.0.1:8001']) {
-      if (!candidates.includes(fallback)) {
-        candidates.push(fallback);
-      }
-    }
-  }
-
-  return candidates;
-}
-
-async function fetchFromAvailableApi(
-  path: string,
-  init: RequestInit,
-) {
-  let lastError: unknown;
-
-  for (const baseUrl of getCandidateApiBaseUrls()) {
-    try {
-      const response = await fetch(`${baseUrl}${path}`, init);
-      activeApiBaseUrl = baseUrl;
-      return response;
-    } catch (error) {
-      lastError = error;
-    }
-  }
-
-  throw lastError instanceof Error ? lastError : new Error('Failed to fetch');
+  return `${API_BASE_URL}${downloadUrl.startsWith('/') ? downloadUrl : `/${downloadUrl}`}`;
 }
 
 async function parseJsonSafely<T>(response: Response): Promise<T> {
@@ -65,7 +30,7 @@ async function parseJsonSafely<T>(response: Response): Promise<T> {
 }
 
 export async function checkBackendHealth(): Promise<HealthResponse> {
-  const response = await fetchFromAvailableApi('/health', {
+  const response = await fetch(`${API_BASE_URL}/health`, {
     method: 'GET',
     cache: 'no-store',
   });
@@ -78,7 +43,7 @@ export async function checkBackendHealth(): Promise<HealthResponse> {
 }
 
 export async function generateCalendar(payload: GeneratePayload): Promise<GenerateResponse> {
-  const response = await fetchFromAvailableApi('/generate', {
+  const response = await fetch(`${API_BASE_URL}/generate`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

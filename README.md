@@ -38,6 +38,14 @@ Create `frontend/.env.local` from `frontend/.env.example` and set:
 - `NEXT_PUBLIC_API_BASE_URL`
 - `NEXT_PUBLIC_BUILDER_PORTFOLIO_URL`
 
+Production frontend setting:
+
+```env
+NEXT_PUBLIC_API_BASE_URL=https://stratega.neurarank.uk
+```
+
+If you use `frontend/.env` instead of `frontend/.env.local`, keep the same value there as well.
+
 ## Deploy
 
 ### Backend on AWS Lightsail
@@ -68,7 +76,7 @@ Import the repo into Vercel and set the project root directory to `frontend`.
 
 Set:
 
-- `NEXT_PUBLIC_API_BASE_URL=https://your-lightsail-backend-url`
+- `NEXT_PUBLIC_API_BASE_URL=https://stratega.neurarank.uk`
 - `NEXT_PUBLIC_BUILDER_PORTFOLIO_URL=https://your-portfolio-url`
 
 Official references:

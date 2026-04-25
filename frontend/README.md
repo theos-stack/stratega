@@ -19,7 +19,7 @@ cp .env.example .env.local
 Default backend URL:
 
 ```env
-NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
+NEXT_PUBLIC_API_BASE_URL=https://stratega.neurarank.uk
 ```
 
 ## 3. Run the frontend
@@ -32,7 +32,7 @@ Open `http://localhost:3000`
 
 ## 4. Run the backend
 
-Make sure your FastAPI backend is running on port `8000`.
+For local development, set `NEXT_PUBLIC_API_BASE_URL` explicitly in `.env.local` or `.env` to whichever backend origin you want to use. The app does not silently fall back to localhost.
 
 ## Deploy to Vercel
 
@@ -41,7 +41,7 @@ When deploying this app to Vercel, import the repo and set the root directory to
 Required environment variables:
 
 ```env
-NEXT_PUBLIC_API_BASE_URL=https://your-lightsail-backend-url
+NEXT_PUBLIC_API_BASE_URL=https://stratega.neurarank.uk
 NEXT_PUBLIC_BUILDER_PORTFOLIO_URL=https://your-portfolio-url
 ```
 
