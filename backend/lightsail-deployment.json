@@ -1,0 +1,24 @@
+{
+  "serviceName": "stratega-ai-backend",
+  "containers": {
+    "app": {
+      "image": ":stratega-ai-backend.latest",
+      "ports": {
+        "8000": "HTTP"
+      },
+      "environment": {
+        "OPENAI_API_KEY": "set-in-lightsail",
+        "OPENAI_MODEL": "gpt-4o-mini",
+        "ALLOWED_ORIGINS": "https://your-vercel-domain.vercel.app"
+      }
+    }
+  },
+  "publicEndpoint": {
+    "containerName": "app",
+    "containerPort": 8000,
+    "healthCheck": {
+      "path": "/health",
+      "successCodes": "200-399"
+    }
+  }
+}
